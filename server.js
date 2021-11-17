@@ -29,7 +29,7 @@ app.get("/app/", (req, res, next) => {
 // CREATE a new user (HTTP method POST) at endpoint /app/new/
 app.post("/app/new", (req, res) => {
 	const stmt = db.prepare('INSERT INTO userinfo (user, pass) VALUES (?, ?)').run([data.user],[data.pass]);
-	res.status(200).json(stmt)
+	res.status(200).json(stmt.changes)
 })
 
 // READ a list of all users (HTTP method GET) at endpoint /app/users/
@@ -47,13 +47,13 @@ app.get("/app/user/:id", (req, res) => {
 // UPDATE a single user (HTTP method PATCH) at endpoint /app/update/user/:id
 app.patch("/app/update/user/:id", (req, res) => {
 	const stmt = db.prepare("UPDATE userinfo SET user = COALESCE(?,user), pass = COALESCE(?,pass) WHERE id = ?").run([req.body.user],[req.body.pass],[req.params.id]);
-	res.status(200).json(stmt);
+	res.status(200).json(stmt.changes);
 });
 
 // DELETE a single user (HTTP method DELETE) at endpoint /app/delete/user/:id 
 app.delete("/app/delete/user/:id", (req, res) => {
 	const stmt = db.prepare("DELETE FROM userinfo WHERE id = ?").run([req.params.id]);
-	res.status(200).json(stmt);
+	res.status(200).json(stmt.changes);
 });
 
 // Default response for any other request
