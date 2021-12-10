@@ -102,3 +102,9 @@ dist
 
 # TernJS port file
 .tern-port
+
+# User Database
+user.db
+
+# Test file
+test.js
